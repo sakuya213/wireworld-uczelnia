@@ -1,0 +1,129 @@
+unit mod_model;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils;
+
+type
+  elementyTablicy = (pusty, przewodnik, glowa, ogon);
+  tablicaElementow = array [0..24] of array[0..79] of elementyTablicy;
+
+procedure zmien(var tablica: tablicaElementow; i: integer; j: integer;
+  nowyElement: elementyTablicy);
+function sprawdzSasiadow(tablica: tablicaElementow; i: integer; j: integer): integer;
+procedure krok(var tablica: tablicaElementow);
+
+
+
+implementation
+
+procedure zmien(var tablica: tablicaElementow; i: integer; j: integer;
+  nowyElement: elementyTablicy);
+begin
+  tablica[i][j] := nowyElement;
+
+end;
+
+function sprawdzSasiadow(tablica: tablicaElementow; i: integer; j: integer): integer;
+var
+  a: integer;
+  b: integer;
+  c: integer;
+  d: integer;
+  e: integer;
+  f: integer;
+  g: integer;
+begin
+  a := 0;
+
+  if i - 1 < 0 then
+  begin
+    b := 0;
+  end
+  else
+  begin
+    b := i - 1;
+  end;
+
+  if j - 1 < 0 then
+  begin
+    c := 0;
+  end
+  else
+  begin
+    c := j - 1;
+  end;
+
+  if i + 1 > 24 then
+  begin
+    d := 24;
+  end
+  else
+  begin
+    d := i + 1;
+  end;
+
+  if j + 1 > 79 then
+  begin
+    e := 79;
+  end
+  else
+  begin
+    e := j + 1;
+  end;
+  for f := b to d do
+  begin
+    for g := c to e do
+    begin
+
+      if tablica[f][g] = glowa then
+      begin
+        a := a + 1;
+      end;
+
+    end;
+  end;
+  sprawdzSasiadow := a;
+
+end;
+
+procedure krok(var tablica: tablicaElementow);
+var
+  tablica2: tablicaElementow;
+  a: integer;
+  b: integer;
+begin
+  for a := 0 to 24 do
+  begin
+    for b := 0 to 79 do
+    begin
+      case tablica[a][b] of
+        pusty: tablica2[a][b] := pusty;
+        przewodnik:
+        begin
+          if (sprawdzSasiadow(tablica, a, b) = 1) or
+            (sprawdzSasiadow(tablica, a, b) = 2) then
+          begin
+            tablica2[a][b] := glowa;
+          end
+          else
+          begin
+            tablica2[a][b] := przewodnik;
+          end;
+        end;
+        glowa: tablica2[a][b] := ogon;
+        ogon: tablica2[a][b] := przewodnik;
+      end;
+
+    end;
+
+  end;
+
+  tablica := tablica2;
+end;
+
+
+end.
