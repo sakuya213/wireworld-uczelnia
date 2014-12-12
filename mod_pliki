@@ -1,0 +1,60 @@
+unit mod_pliki;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, mod_model;
+
+procedure wczytaj(var tablica: tablicaElementow);
+
+implementation
+
+procedure wczytaj(var tablica: tablicaElementow);
+var
+  F: Text;
+  s: string;
+  i: integer;
+  j: integer;
+begin
+  If FileExists('wejscie.txt') Then
+  begin
+  Assign(F, 'wejscie.txt');
+  Reset(F);
+  for i := 0 to 24 do
+  begin
+    ReadLn(F, s);
+    for j := 0 to 79 do
+    begin
+      if s[j] = 'p' then
+      begin
+         zmien(tablica,i,j,pusty)
+      end;
+      if s[j] = 'r' then
+      begin
+         zmien(tablica,i,j,przewodnik)
+      end;
+      if s[j] = 'g' then
+      begin
+         zmien(tablica,i,j,glowa)
+      end;
+      if s[j] = 'o' then
+      begin
+         zmien(tablica,i,j,ogon)
+      end;
+    end;
+  end;
+  Close(F);
+  end
+  else
+  begin
+    writeln('Nie znalezniono pliku wejscie.txt');
+    Halt (1);
+  end;
+
+end;
+
+
+
+end.
