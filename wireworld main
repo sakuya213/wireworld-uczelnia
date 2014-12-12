@@ -1,0 +1,24 @@
+program wireworld;
+
+{$mode objfpc}{$H+}
+uses
+  mod_model,
+  crt,
+  mod_interfejs,
+  mod_pliki;
+
+var
+  tablica: tablicaElementow;
+
+
+begin
+  cursoroff;
+  wczytaj(tablica);
+  while not keypressed do
+  begin
+    wypisz(tablica);
+    krok(tablica);
+    clrscr;
+
+  end;
+end.
